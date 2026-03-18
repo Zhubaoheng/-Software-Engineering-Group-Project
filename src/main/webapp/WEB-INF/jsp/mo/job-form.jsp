@@ -1,28 +1,18 @@
 <%@ page import="cn.bupt.tarecruitment.model.JobPost" %>
 <%@ page import="cn.bupt.tarecruitment.util.WebUtils" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Job Form</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 24px; background: #f6f7fb; }
-        .card { max-width: 820px; background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 12px; }
-        input, textarea, select { width: 100%; padding: 8px; margin: 6px 0 14px; }
-        .message { background: #fef4e6; padding: 10px; border: 1px solid #ffd59e; margin-bottom: 12px; }
-    </style>
-</head>
-<body>
-<div class="card">
-    <h2><%= request.getAttribute("job") != null && ((JobPost) request.getAttribute("job")).getJobId() != null ? "Edit Job Post" : "Create Job Post" %></h2>
+<%
+    JobPost job = (JobPost) request.getAttribute("job");
+    boolean editing = job != null && job.getJobId() != null;
+    request.setAttribute("pageTitle", editing ? "Edit Job Post" : "Create Job Post");
+    request.setAttribute("pageMeta", "Define the module, expected skills, workload, deadline, and availability before publishing the post.");
+    String currentStatus = job == null || job.getStatus() == null ? "OPEN" : job.getStatus();
+%>
+<%@ include file="/WEB-INF/jsp/common/header.jspf" %>
+<section class="card">
+    <h2><%= editing ? "Edit Job Post" : "Create Job Post" %></h2>
     <% String message = (String) request.getAttribute("error"); if (message != null) { %>
-        <div class="message"><%= WebUtils.escapeHtml(message) %></div>
+        <div class="error"><%= WebUtils.escapeHtml(message) %></div>
     <% } %>
-    <%
-        JobPost job = (JobPost) request.getAttribute("job");
-        boolean editing = job != null && job.getJobId() != null;
-        String currentStatus = job == null || job.getStatus() == null ? "OPEN" : job.getStatus();
-    %>
     <form method="post" action="<%= request.getContextPath() %>/mo/jobs">
         <input type="hidden" name="action" value="<%= editing ? "edit" : "create" %>">
         <input type="hidden" name="jobId" value="<%= editing ? job.getJobId() : "" %>">
@@ -45,9 +35,10 @@
             <option value="OPEN" <%= "OPEN".equalsIgnoreCase(currentStatus) ? "selected" : "" %>>Open</option>
             <option value="CLOSED" <%= "CLOSED".equalsIgnoreCase(currentStatus) ? "selected" : "" %>>Closed</option>
         </select>
-        <button type="submit">Save</button>
-        <a href="<%= request.getContextPath() %>/mo/jobs">Back</a>
+        <div class="toolbar">
+            <button type="submit">Save</button>
+            <a class="secondary-link" href="<%= request.getContextPath() %>/mo/jobs">Back</a>
+        </div>
     </form>
-</div>
-</body>
-</html>
+</section>
+<%@ include file="/WEB-INF/jsp/common/footer.jspf" %>
