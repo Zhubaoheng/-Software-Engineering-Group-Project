@@ -1,0 +1,5 @@
+[
+  {"applicantId":"ta001","name":"Alice Zhang","studentId":"20230001","email":"alice@example.com","skills":["Java","SQL","Tutoring"],"availability":"Mon-Fri afternoon","cvFileName":"alice_cv.pdf"},
+  {"applicantId":"ta002","name":"Bob Li","studentId":"20230002","email":"bob@example.com","skills":["Python","Data Analysis"],"availability":"Tue-Thu evening","cvFileName":"bob_cv.pdf"},
+  {"applicantId":"ta003","name":"Carol Wang","studentId":"20230003","email":"carol@example.com","skills":["Web Development","Testing"],"availability":"Weekends","cvFileName":"carol_cv.pdf"}
+]

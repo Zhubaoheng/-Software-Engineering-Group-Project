@@ -1,0 +1,41 @@
+[
+  {
+    "applicantId": "u-ta-1",
+    "name": "Alex Chen",
+    "studentId": "20260001",
+    "email": "alex.chen@bupt.edu.cn",
+    "skills": [
+      "Java",
+      "Git",
+      "Communication"
+    ],
+    "availability": "Weekdays after 14:00",
+    "cvFileName": "alex-chen-cv.pdf"
+  },
+  {
+    "applicantId": "u-ta-2",
+    "name": "Bella Li",
+    "studentId": "20260002",
+    "email": "bella.li@bupt.edu.cn",
+    "skills": [
+      "Java",
+      "Teaching support",
+      "Organisation"
+    ],
+    "availability": "Tue and Thu mornings",
+    "cvFileName": "bella-li-cv.pdf"
+  },
+  {
+    "applicantId": "u-ta-3",
+    "name": "Chris Wang",
+    "studentId": "20260003",
+    "email": "chris.wang@bupt.edu.cn",
+    "skills": [
+      "Git",
+      "Testing",
+      "Communication"
+    ],
+    "availability": "Weekends and Friday afternoons",
+    "cvFileName": "chris-wang-cv.pdf"
+  }
+]

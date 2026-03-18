@@ -1,0 +1,37 @@
+<%@ page import="cn.bupt.tarecruitment.model.AuthUser" %>
+<%
+    AuthUser headerUser = (AuthUser) session.getAttribute("currentUser");
+    String headerRole = headerUser == null ? "" : headerUser.getRole();
+    String contextPath = request.getContextPath();
+    String flashMessage = (String) request.getAttribute("flashMessage");
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TA Recruitment System</title>
+    <link rel="stylesheet" href="<%= contextPath %>/assets/app.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="brand">
+        <div class="brand-mark">TA</div>
+        <div>
+            <div class="brand-title">BUPT International School</div>
+            <div class="brand-subtitle">Teaching Assistant Recruitment System</div>
+        </div>
+    </div>
+    <nav class="nav">
+        <% if ("TA".equalsIgnoreCase(headerRole)) { %>
+        <a href="<%= contextPath %>/ta/profile">Profile</a>
+        <a href="<%= contextPath %>/ta/jobs">Jobs</a>
+        <a href="<%= contextPath %>/ta/applications">Applications</a>
+        <% } %>
+        <a href="<%= contextPath %>/logout">Logout</a>
+    </nav>
+</header>
+<main class="page">
+    <% if (flashMessage != null && !flashMessage.isBlank()) { %>
+    <div class="flash"><%= flashMessage %></div>
+    <% } %>

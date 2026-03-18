@@ -1,0 +1,4 @@
+[
+  {"jobId":"job001","moduleCode":"SE101","moduleName":"Software Engineering Basics","organiserId":"mo001","description":"Support labs and office hours.","requiredSkills":["Java","Communication"],"hoursPerWeek":6,"positions":2,"deadline":"2026-04-01","status":"OPEN"},
+  {"jobId":"job002","moduleCode":"DB202","moduleName":"Database Systems","organiserId":"mo001","description":"Support tutorials and marking.","requiredSkills":["SQL","Organisation"],"hoursPerWeek":8,"positions":1,"deadline":"2026-04-05","status":"OPEN"}
+]

@@ -1,0 +1,49 @@
+[
+  {
+    "jobId": "job-001",
+    "moduleCode": "CS101",
+    "moduleName": "Introduction to Programming",
+    "organiserId": "u-mo-1",
+    "description": "Support weekly lab sessions and answer student questions.",
+    "requiredSkills": [
+      "Java",
+      "Problem solving",
+      "Communication"
+    ],
+    "hoursPerWeek": 8,
+    "positions": 2,
+    "deadline": "2026-04-05",
+    "status": "OPEN"
+  },
+  {
+    "jobId": "job-002",
+    "moduleCode": "SE201",
+    "moduleName": "Software Engineering",
+    "organiserId": "u-mo-1",
+    "description": "Help with tutorials, marking support, and project feedback sessions.",
+    "requiredSkills": [
+      "Software engineering",
+      "Git",
+      "Teamwork"
+    ],
+    "hoursPerWeek": 6,
+    "positions": 1,
+    "deadline": "2026-04-08",
+    "status": "OPEN"
+  },
+  {
+    "jobId": "job-003",
+    "moduleCode": "MA120",
+    "moduleName": "Discrete Mathematics",
+    "organiserId": "u-mo-1",
+    "description": "Closed sample position for workflow testing.",
+    "requiredSkills": [
+      "Mathematics",
+      "Communication"
+    ],
+    "hoursPerWeek": 3,
+    "positions": 1,
+    "deadline": "2026-03-30",
+    "status": "CLOSED"
+  }
+]

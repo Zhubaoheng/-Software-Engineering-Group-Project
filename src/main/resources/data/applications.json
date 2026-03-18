@@ -1,0 +1,5 @@
+[
+  {"applicationId":"app001","jobId":"job001","applicantId":"ta001","submittedAt":"2026-03-10","status":"Selected"},
+  {"applicationId":"app002","jobId":"job001","applicantId":"ta002","submittedAt":"2026-03-11","status":"Shortlisted"},
+  {"applicationId":"app003","jobId":"job002","applicantId":"ta003","submittedAt":"2026-03-12","status":"Under Review"}
+]
