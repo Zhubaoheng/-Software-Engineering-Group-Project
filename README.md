@@ -34,4 +34,4 @@ Application data is stored in the `data/` directory as JSON files. The app creat
 
 ## Team Members
 
-tokidosaya010：231224756(Team members)
+tokidosaya010：231224756(Team member)
