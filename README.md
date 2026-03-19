@@ -242,3 +242,12 @@ Missing files and directories are created automatically when the application sta
 - No database is used; all persistence is file-based.
 - Authentication is simplified for coursework demonstration.
 - The system is designed as an MVP prototype and not as a production-ready platform.
+Application data is stored in the `data/` directory as JSON files. The app creates missing files and upload folders on demand.
+
+## Team Members
+
+tokidosaya010：231224756(Team member)
+
+lswsb：LHR1105
+
+colin596：231225085
