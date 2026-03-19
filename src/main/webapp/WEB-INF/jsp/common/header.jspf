@@ -1,37 +1,78 @@
 <%@ page import="cn.bupt.tarecruitment.model.AuthUser" %>
+<%@ page import="cn.bupt.tarecruitment.util.WebUtils" %>
 <%
     AuthUser headerUser = (AuthUser) session.getAttribute("currentUser");
     String headerRole = headerUser == null ? "" : headerUser.getRole();
     String contextPath = request.getContextPath();
     String flashMessage = (String) request.getAttribute("flashMessage");
+    String pageTitle = (String) request.getAttribute("pageTitle");
+    String pageMeta = (String) request.getAttribute("pageMeta");
+    String servletPath = request.getServletPath();
+    String activeClass;
 %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TA Recruitment System</title>
+    <title><%= pageTitle == null ? "TA Recruitment System" : WebUtils.escapeHtml(pageTitle) + " - TA Recruitment System" %></title>
     <link rel="stylesheet" href="<%= contextPath %>/assets/app.css">
 </head>
-<body>
-<header class="topbar">
-    <div class="brand">
-        <div class="brand-mark">TA</div>
-        <div>
-            <div class="brand-title">BUPT International School</div>
-            <div class="brand-subtitle">Teaching Assistant Recruitment System</div>
+<body class="app-shell">
+<div class="shell">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-mark">TA</div>
+            <div>
+                <div class="brand-title">BUPT International School</div>
+                <div class="brand-subtitle">Recruitment Workspace</div>
+            </div>
         </div>
-    </div>
-    <nav class="nav">
-        <% if ("TA".equalsIgnoreCase(headerRole)) { %>
-        <a href="<%= contextPath %>/ta/profile">Profile</a>
-        <a href="<%= contextPath %>/ta/jobs">Jobs</a>
-        <a href="<%= contextPath %>/ta/applications">Applications</a>
-        <% } %>
-        <a href="<%= contextPath %>/logout">Logout</a>
-    </nav>
-</header>
-<main class="page">
-    <% if (flashMessage != null && !flashMessage.isBlank()) { %>
-    <div class="flash"><%= flashMessage %></div>
-    <% } %>
+
+        <div class="sidebar-section">
+            <div class="sidebar-label">Current Role</div>
+            <div class="role-pill"><%= WebUtils.escapeHtml(headerRole) %></div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <% if ("TA".equalsIgnoreCase(headerRole)) { %>
+                <% activeClass = servletPath.startsWith("/ta/profile") ? "is-active" : ""; %>
+                <a class="nav-item <%= activeClass %>" href="<%= contextPath %>/ta/profile">Profile</a>
+                <% activeClass = servletPath.startsWith("/ta/jobs") || servletPath.startsWith("/ta/job-detail") ? "is-active" : ""; %>
+                <a class="nav-item <%= activeClass %>" href="<%= contextPath %>/ta/jobs">Open Jobs</a>
+                <% activeClass = servletPath.startsWith("/ta/applications") ? "is-active" : ""; %>
+                <a class="nav-item <%= activeClass %>" href="<%= contextPath %>/ta/applications">Applications</a>
+            <% } else if ("MO".equalsIgnoreCase(headerRole)) { %>
+                <% activeClass = servletPath.startsWith("/mo/jobs") ? "is-active" : ""; %>
+                <a class="nav-item <%= activeClass %>" href="<%= contextPath %>/mo/jobs">Job Posts</a>
+                <% activeClass = servletPath.startsWith("/mo/applicants") ? "is-active" : ""; %>
+                <a class="nav-item <%= activeClass %>" href="<%= contextPath %>/mo/applicants">Applicants</a>
+            <% } else if ("ADMIN".equalsIgnoreCase(headerRole)) { %>
+                <% activeClass = servletPath.startsWith("/admin/workload") ? "is-active" : ""; %>
+                <a class="nav-item <%= activeClass %>" href="<%= contextPath %>/admin/workload">Workload Board</a>
+            <% } else { %>
+                <a class="nav-item is-active" href="<%= contextPath %>/role-home">Overview</a>
+            <% } %>
+        </nav>
+
+        <div class="sidebar-note">
+            <div class="sidebar-label">Demo Focus</div>
+            <p>This MVP prioritises profile management, job application, MO review, and workload visibility for assessment demo use.</p>
+        </div>
+
+        <a class="logout-link" href="<%= contextPath %>/logout">Log Out</a>
+    </aside>
+
+    <main class="shell-main">
+        <div class="content-frame">
+            <header class="page-header">
+                <div>
+                    <div class="eyebrow">Teaching Assistant Recruitment System</div>
+                    <h1><%= pageTitle == null ? "Workspace" : WebUtils.escapeHtml(pageTitle) %></h1>
+                    <p class="page-meta"><%= pageMeta == null ? "A lightweight demo interface for the current MVP." : WebUtils.escapeHtml(pageMeta) %></p>
+                </div>
+            </header>
+
+            <% if (flashMessage != null && !flashMessage.isBlank()) { %>
+            <div class="flash"><%= WebUtils.escapeHtml(flashMessage) %></div>
+            <% } %>
