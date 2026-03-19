@@ -35,3 +35,5 @@ Application data is stored in the `data/` directory as JSON files. The app creat
 ## Team Members
 
 tokidosaya010：231224756(Team member)
+lswsb：LHR1105
+colin596：231225085
