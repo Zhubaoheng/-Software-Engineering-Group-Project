@@ -19,15 +19,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         AuthUser user = WebUtils.currentUser(request);
         if (user != null) {
-            if ("TA".equalsIgnoreCase(user.getRole())) {
-                response.sendRedirect(request.getContextPath() + "/ta/profile");
-            } else if ("MO".equalsIgnoreCase(user.getRole())) {
-                response.sendRedirect(request.getContextPath() + "/mo/jobs");
-            } else if ("ADMIN".equalsIgnoreCase(user.getRole())) {
-                response.sendRedirect(request.getContextPath() + "/admin/workload");
-            } else {
-                response.sendRedirect(request.getContextPath() + "/role-home");
-            }
+            response.sendRedirect(WebUtils.resolveLoginSuccessRedirect(request, user));
             return;
         }
         request.setAttribute("flashMessage", WebUtils.consumeFlash(request));
@@ -43,15 +35,7 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession(true);
             session.setAttribute(WebUtils.SESSION_USER, user);
             try {
-                if ("TA".equalsIgnoreCase(user.getRole())) {
-                    response.sendRedirect(request.getContextPath() + "/ta/profile");
-                } else if ("MO".equalsIgnoreCase(user.getRole())) {
-                    response.sendRedirect(request.getContextPath() + "/mo/jobs");
-                } else if ("ADMIN".equalsIgnoreCase(user.getRole())) {
-                    response.sendRedirect(request.getContextPath() + "/admin/workload");
-                } else {
-                    response.sendRedirect(request.getContextPath() + "/role-home");
-                }
+                response.sendRedirect(WebUtils.resolveLoginSuccessRedirect(request, user));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

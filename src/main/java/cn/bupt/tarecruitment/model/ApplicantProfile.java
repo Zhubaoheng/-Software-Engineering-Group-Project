@@ -8,8 +8,14 @@ public class ApplicantProfile {
     private String name;
     private String studentId;
     private String email;
+    private String phone;
+    private String major;
+    private String grade;
+    private String preferredRole;
     private List<String> skills = new ArrayList<>();
     private String availability;
+    private String selfIntroduction;
+    private String projectExperience;
     private String cvFileName;
 
     public ApplicantProfile() {
@@ -51,6 +57,38 @@ public class ApplicantProfile {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public String getPreferredRole() {
+        return preferredRole;
+    }
+
+    public void setPreferredRole(String preferredRole) {
+        this.preferredRole = preferredRole;
+    }
+
     public List<String> getSkills() {
         return skills;
     }
@@ -65,6 +103,22 @@ public class ApplicantProfile {
 
     public void setAvailability(String availability) {
         this.availability = availability;
+    }
+
+    public String getSelfIntroduction() {
+        return selfIntroduction;
+    }
+
+    public void setSelfIntroduction(String selfIntroduction) {
+        this.selfIntroduction = selfIntroduction;
+    }
+
+    public String getProjectExperience() {
+        return projectExperience;
+    }
+
+    public void setProjectExperience(String projectExperience) {
+        this.projectExperience = projectExperience;
     }
 
     public String getCvFileName() {
