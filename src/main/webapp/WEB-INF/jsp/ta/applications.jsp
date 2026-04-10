@@ -26,16 +26,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% for (ApplicationRecord application : applications) {
-                       JobPost job = jobsById == null ? null : jobsById.get(application.getJobId());
+                <% for (ApplicationRecord applicationRecord : applications) {
+                       JobPost job = jobsById == null ? null : jobsById.get(applicationRecord.getJobId());
                 %>
                 <tr>
                     <td>
-                        <strong><%= job == null ? application.getJobId() : WebUtils.escapeHtml(job.getModuleCode()) %></strong><br>
+                        <strong><%= job == null ? applicationRecord.getJobId() : WebUtils.escapeHtml(job.getModuleCode()) %></strong><br>
                         <%= job == null ? "" : WebUtils.escapeHtml(job.getModuleName()) %>
                     </td>
-                    <td><span class="status"><%= WebUtils.escapeHtml(application.getStatus()) %></span></td>
-                    <td><%= WebUtils.escapeHtml(application.getSubmittedAt()) %></td>
+                    <td><span class="status"><%= WebUtils.escapeHtml(applicationRecord.getStatus()) %></span></td>
+                    <td><%= WebUtils.escapeHtml(applicationRecord.getSubmittedAt()) %></td>
                 </tr>
                 <% } %>
                 </tbody>
