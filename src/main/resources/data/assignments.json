@@ -1,6 +1,16 @@
 [
-  {"assignmentId":"asg001","jobId":"job001","applicantId":"ta001","assignedHours":6,"assignedAt":"2026-03-15"},
-  {"assignmentId":"asg002","jobId":"job001","applicantId":"ta001","assignedHours":8,"assignedAt":"2026-03-16"},
-  {"assignmentId":"asg003","jobId":"job002","applicantId":"ta002","assignedHours":8,"assignedAt":"2026-03-16"},
-  {"assignmentId":"asg004","jobId":"job002","applicantId":"ta003","assignedHours":5,"assignedAt":"2026-03-17"}
+  {
+    "assignmentId": "ASG-0001",
+    "jobId": "job-001",
+    "applicantId": "u-ta-1",
+    "assignedHours": 8,
+    "assignedAt": "2026-03-15T10:00:00"
+  },
+  {
+    "assignmentId": "ASG-0002",
+    "jobId": "job-002",
+    "applicantId": "u-ta-1",
+    "assignedHours": 6,
+    "assignedAt": "2026-03-16T11:30:00"
+  }
 ]

@@ -44,10 +44,20 @@ public final class JsonUtils {
     public static synchronized void ensureFile(Path file) {
         ensureParent(file);
         if (Files.notExists(file)) {
-            try {
-                Files.writeString(file, "[]", StandardCharsets.UTF_8);
+            // Try to copy seed data from classpath (src/main/resources/data/)
+            String fileName = file.getFileName().toString();
+            try (var in = JsonUtils.class.getResourceAsStream("/data/" + fileName)) {
+                if (in != null) {
+                    Files.copy(in, file);
+                } else {
+                    Files.writeString(file, "[]", StandardCharsets.UTF_8);
+                }
             } catch (IOException e) {
-                throw new IllegalStateException("Failed to create JSON file " + file, e);
+                try {
+                    Files.writeString(file, "[]", StandardCharsets.UTF_8);
+                } catch (IOException ex) {
+                    throw new IllegalStateException("Failed to create JSON file " + file, ex);
+                }
             }
         }
     }
