@@ -49,7 +49,13 @@ public class TAProfileServlet extends HttpServlet {
         String name = trim(request.getParameter("name"));
         String studentId = trim(request.getParameter("studentId"));
         String email = trim(request.getParameter("email"));
+        String phone = trim(request.getParameter("phone"));
+        String major = trim(request.getParameter("major"));
+        String grade = trim(request.getParameter("grade"));
+        String preferredRole = trim(request.getParameter("preferredRole"));
         String availability = trim(request.getParameter("availability"));
+        String selfIntroduction = trim(request.getParameter("selfIntroduction"));
+        String projectExperience = trim(request.getParameter("projectExperience"));
         String skillsRaw = request.getParameter("skills");
 
         if (name.isEmpty()) {
@@ -66,14 +72,16 @@ public class TAProfileServlet extends HttpServlet {
         }
 
         if (!errors.isEmpty()) {
-            ApplicantProfile draft = buildProfile(existing, user.getId(), name, studentId, email, availability, skillsRaw);
+            ApplicantProfile draft = buildProfile(existing, user.getId(), name, studentId, email, phone, major, grade,
+                    preferredRole, availability, selfIntroduction, projectExperience, skillsRaw);
             request.setAttribute("profile", draft);
             request.setAttribute("errors", errors);
             WebUtils.forward(request, response, "/WEB-INF/jsp/ta/profile.jsp");
             return;
         }
 
-        ApplicantProfile profile = buildProfile(existing, user.getId(), name, studentId, email, availability, skillsRaw);
+        ApplicantProfile profile = buildProfile(existing, user.getId(), name, studentId, email, phone, major, grade,
+                preferredRole, availability, selfIntroduction, projectExperience, skillsRaw);
         Part cvPart = request.getPart("cvFile");
         String uploadedFileName = saveCvFile(user.getId(), cvPart);
         if (uploadedFileName != null) {
@@ -85,13 +93,21 @@ public class TAProfileServlet extends HttpServlet {
     }
 
     private ApplicantProfile buildProfile(ApplicantProfile existing, String applicantId, String name, String studentId,
-                                          String email, String availability, String skillsRaw) {
+                                          String email, String phone, String major, String grade, String preferredRole,
+                                          String availability, String selfIntroduction, String projectExperience,
+                                          String skillsRaw) {
         ApplicantProfile profile = existing == null ? new ApplicantProfile(applicantId) : existing;
         profile.setApplicantId(applicantId);
         profile.setName(name);
         profile.setStudentId(studentId);
         profile.setEmail(email);
+        profile.setPhone(phone);
+        profile.setMajor(major);
+        profile.setGrade(grade);
+        profile.setPreferredRole(preferredRole);
         profile.setAvailability(availability);
+        profile.setSelfIntroduction(selfIntroduction);
+        profile.setProjectExperience(projectExperience);
         profile.setSkills(WebUtils.splitCsv(skillsRaw));
         return profile;
     }
