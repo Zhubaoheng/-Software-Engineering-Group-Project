@@ -15,6 +15,7 @@ import java.util.List;
 public final class WebUtils {
     public static final String SESSION_USER = "currentUser";
     public static final String SESSION_FLASH = "flashMessage";
+    public static final String SESSION_POST_LOGIN_REDIRECT = "postLoginRedirect";
 
     private WebUtils() {
     }
@@ -38,6 +39,7 @@ public final class WebUtils {
             throws IOException {
         AuthUser user = currentUser(request);
         if (user == null) {
+            setFlash(request, "Please sign in first.");
             redirect(response, request.getContextPath() + "/login");
         }
         return user;
@@ -51,7 +53,7 @@ public final class WebUtils {
         }
         if (!role.equalsIgnoreCase(user.getRole())) {
             setFlash(request, "You do not have access to that page.");
-            redirect(response, request.getContextPath() + "/login");
+            redirect(response, defaultLandingPath(request, user));
             return null;
         }
         return user;
@@ -73,6 +75,71 @@ public final class WebUtils {
             return value.toString();
         }
         return null;
+    }
+
+    public static void rememberPostLoginRedirect(HttpServletRequest request) {
+        String path = buildApplicationPath(request);
+        if (path == null || path.isBlank()) {
+            return;
+        }
+        request.getSession(true).setAttribute(SESSION_POST_LOGIN_REDIRECT, path);
+    }
+
+    public static String consumePostLoginRedirect(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return null;
+        }
+        Object value = session.getAttribute(SESSION_POST_LOGIN_REDIRECT);
+        if (value != null) {
+            session.removeAttribute(SESSION_POST_LOGIN_REDIRECT);
+            return value.toString();
+        }
+        return null;
+    }
+
+    public static String resolveLoginSuccessRedirect(HttpServletRequest request, AuthUser user) {
+        String target = consumePostLoginRedirect(request);
+        String contextPath = request.getContextPath();
+        if (target != null && !target.isBlank()) {
+            String loginPath = contextPath + "/login";
+            String registerPath = contextPath + "/register";
+            String logoutPath = contextPath + "/logout";
+            boolean withinApp = target.startsWith(contextPath + "/") || (contextPath.isEmpty() && target.startsWith("/"));
+            if (withinApp && !target.equals(loginPath) && !target.equals(registerPath) && !target.equals(logoutPath)) {
+                return target;
+            }
+        }
+        return defaultLandingPath(request, user);
+    }
+
+    public static String defaultLandingPath(HttpServletRequest request, AuthUser user) {
+        String contextPath = request.getContextPath();
+        if (user == null || user.getRole() == null) {
+            return contextPath + "/login";
+        }
+        if ("TA".equalsIgnoreCase(user.getRole())) {
+            return contextPath + "/ta/profile";
+        }
+        if ("MO".equalsIgnoreCase(user.getRole())) {
+            return contextPath + "/mo/jobs";
+        }
+        if ("ADMIN".equalsIgnoreCase(user.getRole())) {
+            return contextPath + "/admin/workload";
+        }
+        return contextPath + "/role-home";
+    }
+
+    private static String buildApplicationPath(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        if (uri == null || uri.isBlank()) {
+            return null;
+        }
+        String query = request.getQueryString();
+        if (query == null || query.isBlank()) {
+            return uri;
+        }
+        return uri + "?" + query;
     }
 
     public static List<String> splitCsv(String raw) {
