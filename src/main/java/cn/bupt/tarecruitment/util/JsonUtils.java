@@ -43,22 +43,34 @@ public final class JsonUtils {
 
     public static synchronized void ensureFile(Path file) {
         ensureParent(file);
-        if (Files.notExists(file)) {
-            // Try to copy seed data from classpath (src/main/resources/data/)
+        boolean needsSeed = Files.notExists(file) || isEmptyJsonArray(file);
+        if (needsSeed) {
             String fileName = file.getFileName().toString();
             try (var in = JsonUtils.class.getResourceAsStream("/data/" + fileName)) {
                 if (in != null) {
+                    Files.deleteIfExists(file);
                     Files.copy(in, file);
-                } else {
+                } else if (Files.notExists(file)) {
                     Files.writeString(file, "[]", StandardCharsets.UTF_8);
                 }
             } catch (IOException e) {
-                try {
-                    Files.writeString(file, "[]", StandardCharsets.UTF_8);
-                } catch (IOException ex) {
-                    throw new IllegalStateException("Failed to create JSON file " + file, ex);
+                if (Files.notExists(file)) {
+                    try {
+                        Files.writeString(file, "[]", StandardCharsets.UTF_8);
+                    } catch (IOException ex) {
+                        throw new IllegalStateException("Failed to create JSON file " + file, ex);
+                    }
                 }
             }
+        }
+    }
+
+    private static boolean isEmptyJsonArray(Path file) {
+        try {
+            String content = Files.readString(file, StandardCharsets.UTF_8).trim();
+            return content.isEmpty() || content.equals("[]");
+        } catch (IOException e) {
+            return false;
         }
     }
 
