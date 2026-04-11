@@ -1,7 +1,26 @@
-[
-  {"id":"admin001","username":"admin","password":"123456","role":"ADMIN"},
-  {"id":"mo001","username":"mo","password":"123456","role":"MO"},
-  {"id":"ta001","username":"alice","password":"123456","role":"TA"},
-  {"id":"ta002","username":"bob","password":"123456","role":"TA"},
-  {"id":"ta003","username":"carol","password":"123456","role":"TA"}
-]
+[ {
+  "id" : "u-ta-1",
+  "username" : "ta01",
+  "password" : "ta01",
+  "role" : "TA"
+}, {
+  "id" : "u-ta-2",
+  "username" : "ta02",
+  "password" : "ta02",
+  "role" : "TA"
+}, {
+  "id" : "u-ta-3",
+  "username" : "ta03",
+  "password" : "ta03",
+  "role" : "TA"
+}, {
+  "id" : "u-mo-1",
+  "username" : "mo01",
+  "password" : "mo01",
+  "role" : "MO"
+}, {
+  "id" : "u-admin-1",
+  "username" : "admin01",
+  "password" : "admin01",
+  "role" : "ADMIN"
+} ]
