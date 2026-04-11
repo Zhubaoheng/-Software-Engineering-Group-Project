@@ -3,6 +3,7 @@
 <%
     AuthUser headerUser = (AuthUser) session.getAttribute("currentUser");
     String headerRole = headerUser == null ? "" : headerUser.getRole();
+    String headerUsername = headerUser == null ? "" : headerUser.getUsername();
     String contextPath = request.getContextPath();
     String flashMessage = (String) request.getAttribute("flashMessage");
     String pageTitle = (String) request.getAttribute("pageTitle");
@@ -15,7 +16,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= pageTitle == null ? "TA Recruitment System" : WebUtils.escapeHtml(pageTitle) + " - TA Recruitment System" %></title>
+    <title><%= pageTitle == null ? "TA Recruitment System" : WebUtils.escapeHtml(pageTitle) + " - TA Recruitment" %></title>
     <link rel="stylesheet" href="<%= contextPath %>/assets/app.css">
 </head>
 <body class="app-shell">
@@ -30,8 +31,8 @@
         </div>
 
         <div class="sidebar-section">
-            <div class="sidebar-label">Current Role</div>
-            <div class="role-pill"><%= WebUtils.escapeHtml(headerRole) %></div>
+            <div class="sidebar-label">Signed in as</div>
+            <div class="role-pill"><%= WebUtils.escapeHtml(headerUsername) %> &middot; <%= WebUtils.escapeHtml(headerRole) %></div>
         </div>
 
         <nav class="sidebar-nav">
@@ -56,8 +57,8 @@
         </nav>
 
         <div class="sidebar-note">
-            <div class="sidebar-label">Demo Focus</div>
-            <p>This MVP prioritises profile management, job application, MO review, and workload visibility for assessment demo use.</p>
+            <div class="sidebar-label">System Version</div>
+            <p>Iteration 2 &mdash; profile management, job applications, MO review, and workload monitoring.</p>
         </div>
 
         <a class="logout-link" href="<%= contextPath %>/logout">Log Out</a>
@@ -69,10 +70,11 @@
                 <div>
                     <div class="eyebrow">Teaching Assistant Recruitment System</div>
                     <h1><%= pageTitle == null ? "Workspace" : WebUtils.escapeHtml(pageTitle) %></h1>
-                    <p class="page-meta"><%= pageMeta == null ? "A lightweight demo interface for the current MVP." : WebUtils.escapeHtml(pageMeta) %></p>
+                    <p class="page-meta"><%= pageMeta == null ? "A lightweight recruitment workspace." : WebUtils.escapeHtml(pageMeta) %></p>
                 </div>
             </header>
 
             <% if (flashMessage != null && !flashMessage.isBlank()) { %>
             <div class="flash"><%= WebUtils.escapeHtml(flashMessage) %></div>
             <% } %>
+
