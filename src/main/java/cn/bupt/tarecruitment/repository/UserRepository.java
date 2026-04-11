@@ -3,6 +3,7 @@ package cn.bupt.tarecruitment.repository;
 import cn.bupt.tarecruitment.model.AuthUser;
 import cn.bupt.tarecruitment.util.AppPaths;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,5 +32,12 @@ public class UserRepository extends JsonRepository<AuthUser> {
         return findAll().stream()
                 .filter(user -> id.equals(user.getId()))
                 .findFirst();
+    }
+
+    public void save(AuthUser user) {
+        List<AuthUser> users = new ArrayList<>(findAll());
+        users.removeIf(item -> user.getId().equals(item.getId()));
+        users.add(user);
+        writeAll(users);
     }
 }
