@@ -1,41 +1,43 @@
-[
-  {
-    "applicantId": "u-ta-1",
-    "name": "Alex Chen",
-    "studentId": "20260001",
-    "email": "alex.chen@bupt.edu.cn",
-    "skills": [
-      "Java",
-      "Git",
-      "Communication"
-    ],
-    "availability": "Weekdays after 14:00",
-    "cvFileName": "alex-chen-cv.pdf"
-  },
-  {
-    "applicantId": "u-ta-2",
-    "name": "Bella Li",
-    "studentId": "20260002",
-    "email": "bella.li@bupt.edu.cn",
-    "skills": [
-      "Java",
-      "Teaching support",
-      "Organisation"
-    ],
-    "availability": "Tue and Thu mornings",
-    "cvFileName": "bella-li-cv.pdf"
-  },
-  {
-    "applicantId": "u-ta-3",
-    "name": "Chris Wang",
-    "studentId": "20260003",
-    "email": "chris.wang@bupt.edu.cn",
-    "skills": [
-      "Git",
-      "Testing",
-      "Communication"
-    ],
-    "availability": "Weekends and Friday afternoons",
-    "cvFileName": "chris-wang-cv.pdf"
-  }
-]
+[ {
+  "applicantId" : "u-ta-2",
+  "name" : "Bella Li",
+  "studentId" : "20260002",
+  "email" : "bella.li@bupt.edu.cn",
+  "phone" : "13800000002",
+  "major" : "Information Systems",
+  "grade" : "Year 2",
+  "preferredRole" : "Tutorial support, attendance and marking",
+  "skills" : [ "Java", "Teaching support", "Organisation" ],
+  "availability" : "Tue and Thu mornings",
+  "selfIntroduction" : "Experienced in coordinating study groups and explaining weekly exercises clearly. Comfortable with repetitive marking and student communication.",
+  "projectExperience" : "Supported a student-led revision workshop for introductory programming, prepared examples, collected FAQs, and followed up on common mistakes.",
+  "cvFileName" : "bella-li-cv.pdf"
+}, {
+  "applicantId" : "u-ta-3",
+  "name" : "Chris Wang",
+  "studentId" : "20260003",
+  "email" : "chris.wang@bupt.edu.cn",
+  "phone" : "13800000003",
+  "major" : "Computer Science",
+  "grade" : "MSc",
+  "preferredRole" : "Testing support, lab troubleshooting",
+  "skills" : [ "Git", "Testing", "Communication" ],
+  "availability" : "Weekends and Friday afternoons",
+  "selfIntroduction" : "Detail-oriented and comfortable checking student submissions, reproducing bugs, and documenting feedback in a structured way.",
+  "projectExperience" : "Worked on a web testing project focused on regression cases and issue triage, maintaining test scenarios and summarising defects for the team.",
+  "cvFileName" : "chris-wang-cv.pdf"
+}, {
+  "applicantId" : "u-ta-1",
+  "name" : "Alex Chen",
+  "studentId" : "20260001",
+  "email" : "alex.chen@bupt.edu.cn",
+  "phone" : "13800000001",
+  "major" : "Software Engineering",
+  "grade" : "Year 3",
+  "preferredRole" : "Java lab TA, assignment support",
+  "skills" : [ "Java", "Git", "Communication", "Unit Testing" ],
+  "availability" : "Weekdays after 14:00",
+  "selfIntroduction" : "",
+  "projectExperience" : "Built a course project management system in Java with a 4-person team, responsible for backend APIs, database design, and bug fixing during demo week.",
+  "cvFileName" : "2425_EBU6018_A.pdf"
+} ]
