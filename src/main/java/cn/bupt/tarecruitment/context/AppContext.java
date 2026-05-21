@@ -8,10 +8,12 @@ import cn.bupt.tarecruitment.repository.UserRepository;
 import cn.bupt.tarecruitment.service.ApplicationService;
 import cn.bupt.tarecruitment.service.AuthService;
 import cn.bupt.tarecruitment.service.JobService;
+import cn.bupt.tarecruitment.service.MatchService;
 import cn.bupt.tarecruitment.service.ProfileService;
 import cn.bupt.tarecruitment.service.impl.DefaultApplicationService;
 import cn.bupt.tarecruitment.service.impl.DefaultAuthService;
 import cn.bupt.tarecruitment.service.impl.DefaultJobService;
+import cn.bupt.tarecruitment.service.impl.DefaultMatchService;
 import cn.bupt.tarecruitment.service.impl.DefaultProfileService;
 import cn.bupt.tarecruitment.util.AppPaths;
 import cn.bupt.tarecruitment.util.JsonUtils;
@@ -28,6 +30,7 @@ public final class AppContext {
     public static final JobService JOBS_SERVICE = new DefaultJobService(JOBS);
     public static final ApplicationService APPLICATIONS_SERVICE =
             new DefaultApplicationService(APPLICATIONS, JOBS_SERVICE);
+    public static final MatchService MATCH_SERVICE = new DefaultMatchService();
 
     static {
         JsonUtils.ensureFile(AppPaths.USERS_FILE);

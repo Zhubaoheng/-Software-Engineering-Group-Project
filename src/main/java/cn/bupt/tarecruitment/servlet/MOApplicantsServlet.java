@@ -6,6 +6,7 @@ import cn.bupt.tarecruitment.model.ApplicationReviewView;
 import cn.bupt.tarecruitment.model.ApplicantProfile;
 import cn.bupt.tarecruitment.model.AuthUser;
 import cn.bupt.tarecruitment.model.JobPost;
+import cn.bupt.tarecruitment.model.SkillMatch;
 import cn.bupt.tarecruitment.util.WebUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,7 +16,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/mo/applicants")
 public class MOApplicantsServlet extends HttpServlet {
@@ -45,12 +48,25 @@ public class MOApplicantsServlet extends HttpServlet {
             return;
         }
 
+        // Compute an explainable skill match per applicant, then rank applicants
+        // by descending match score so the best-matched candidates appear first.
+        // The match is advisory only; the MO still makes the hiring decision.
+        Map<String, SkillMatch> matches = new LinkedHashMap<>();
         List<ApplicationReviewView> reviews = AppContext.APPLICATIONS.findByJobId(jobId).stream()
                 .map(application -> toView(application, job))
-                .sorted(Comparator.comparing(view -> view.getProfile() == null ? "" : view.getProfile().getName(), String.CASE_INSENSITIVE_ORDER))
+                .peek(view -> matches.put(
+                        view.getApplication().getApplicationId(),
+                        AppContext.MATCH_SERVICE.match(job, view.getProfile())))
+                .sorted(Comparator
+                        .comparingInt((ApplicationReviewView view) ->
+                                matches.get(view.getApplication().getApplicationId()).getScorePercent())
+                        .reversed()
+                        .thenComparing(view -> view.getProfile() == null ? "" : view.getProfile().getName(),
+                                String.CASE_INSENSITIVE_ORDER))
                 .toList();
         request.setAttribute("job", job);
         request.setAttribute("applications", reviews);
+        request.setAttribute("matches", matches);
         WebUtils.forward(request, response, "/WEB-INF/jsp/mo/applicants.jsp");
     }
 

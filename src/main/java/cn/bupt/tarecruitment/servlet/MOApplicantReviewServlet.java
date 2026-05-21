@@ -7,6 +7,7 @@ import cn.bupt.tarecruitment.model.ApplicationStatus;
 import cn.bupt.tarecruitment.model.AssignmentRecord;
 import cn.bupt.tarecruitment.model.AuthUser;
 import cn.bupt.tarecruitment.model.JobPost;
+import cn.bupt.tarecruitment.model.SkillMatch;
 import cn.bupt.tarecruitment.util.WebUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -33,6 +34,7 @@ public class MOApplicantReviewServlet extends HttpServlet {
             return;
         }
         request.setAttribute("review", review);
+        request.setAttribute("match", matchFor(review));
         WebUtils.forward(request, response, "/WEB-INF/jsp/mo/applicant-detail.jsp");
     }
 
@@ -70,8 +72,16 @@ public class MOApplicantReviewServlet extends HttpServlet {
                 return;
             }
             request.setAttribute("review", review);
+            request.setAttribute("match", matchFor(review));
             WebUtils.forward(request, response, "/WEB-INF/jsp/mo/applicant-detail.jsp");
         }
+    }
+
+    private SkillMatch matchFor(ApplicationReviewView review) {
+        if (review == null) {
+            return null;
+        }
+        return AppContext.MATCH_SERVICE.match(review.getJob(), review.getProfile());
     }
 
     private ApplicationReviewView loadReview(HttpServletRequest request, HttpServletResponse response, AuthUser user)

@@ -1,8 +1,10 @@
 package cn.bupt.tarecruitment.servlet;
 
 import cn.bupt.tarecruitment.context.AppContext;
+import cn.bupt.tarecruitment.model.ApplicantProfile;
 import cn.bupt.tarecruitment.model.AuthUser;
 import cn.bupt.tarecruitment.model.JobPost;
+import cn.bupt.tarecruitment.model.SkillMatch;
 import cn.bupt.tarecruitment.util.WebUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -28,7 +30,10 @@ public class TAJobDetailServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/ta/jobs");
             return;
         }
+        ApplicantProfile profile = AppContext.PROFILES_SERVICE.getProfile(user.getId());
+        SkillMatch match = AppContext.MATCH_SERVICE.match(job, profile);
         request.setAttribute("job", job);
+        request.setAttribute("match", match);
         request.setAttribute("alreadyApplied", AppContext.APPLICATIONS_SERVICE.hasActiveApplication(user.getId(), jobId));
         request.setAttribute("flashMessage", WebUtils.consumeFlash(request));
         WebUtils.forward(request, response, "/WEB-INF/jsp/ta/job-detail.jsp");
