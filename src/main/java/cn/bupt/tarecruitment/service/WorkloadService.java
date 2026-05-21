@@ -1,5 +1,6 @@
 package cn.bupt.tarecruitment.service;
 
+import cn.bupt.tarecruitment.model.WorkloadRecommendation;
 import cn.bupt.tarecruitment.model.WorkloadRow;
 import cn.bupt.tarecruitment.model.WorkloadSummary;
 
@@ -9,4 +10,6 @@ public interface WorkloadService {
     WorkloadSummary buildSummary();
 
     List<WorkloadRow> buildRows();
+
+    List<WorkloadRecommendation> recommendRebalancing();
 }

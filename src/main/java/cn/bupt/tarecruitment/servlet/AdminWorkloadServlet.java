@@ -25,6 +25,7 @@ public class AdminWorkloadServlet extends HttpServlet {
         }
         request.setAttribute("summary", workloadService.buildSummary());
         request.setAttribute("rows", workloadService.buildRows());
+        request.setAttribute("recommendations", workloadService.recommendRebalancing());
         request.setAttribute("flashMessage", WebUtils.consumeFlash(request));
         WebUtils.forward(request, response, "/WEB-INF/jsp/admin/workload.jsp");
     }
