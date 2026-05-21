@@ -32,7 +32,11 @@
 
         <div class="sidebar-section">
             <div class="sidebar-label">Signed in as</div>
-            <div class="role-pill"><%= WebUtils.escapeHtml(headerUsername) %> &middot; <%= WebUtils.escapeHtml(headerRole) %></div>
+            <% if (headerUser != null) { %>
+            <div class="role-pill"><%= WebUtils.escapeHtml(headerUsername) %> &middot; <%= WebUtils.escapeHtml(headerRole.toUpperCase()) %></div>
+            <% } else { %>
+            <div class="role-pill">Guest</div>
+            <% } %>
         </div>
 
         <nav class="sidebar-nav">
@@ -58,7 +62,7 @@
 
         <div class="sidebar-note">
             <div class="sidebar-label">System Version</div>
-            <p>Iteration 2 &mdash; profile management, job applications, MO review, and workload monitoring.</p>
+            <p>Final Iteration &mdash; profile &amp; CV management, job applications, MO review, workload monitoring, and AI-assisted skill matching.</p>
         </div>
 
         <a class="logout-link" href="<%= contextPath %>/logout">Log Out</a>

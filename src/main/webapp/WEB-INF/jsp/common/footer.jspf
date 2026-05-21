@@ -2,17 +2,33 @@
     </main>
 </div>
 <script>
-    // Auto-dismiss flash messages after 4 seconds
-    document.addEventListener('DOMContentLoaded', function() {
-        var flash = document.querySelector('.flash');
-        if (flash) {
-            setTimeout(function() {
-                flash.style.transition = 'opacity 0.5s';
-                flash.style.opacity = '0';
-                setTimeout(function() { flash.remove(); }, 500);
-            }, 4000);
+    // Auto-dismiss flash messages a few seconds after the page loads.
+    (function () {
+        function dismiss(el) {
+            if (!el) {
+                return;
+            }
+            el.style.transition = 'opacity 0.5s ease';
+            el.style.opacity = '0';
+            setTimeout(function () {
+                if (el && el.parentNode) {
+                    el.parentNode.removeChild(el);
+                }
+            }, 500);
         }
-    });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var flashes = document.querySelectorAll('.flash');
+            if (!flashes || flashes.length === 0) {
+                return;
+            }
+            flashes.forEach(function (flash) {
+                setTimeout(function () {
+                    dismiss(flash);
+                }, 4000);
+            });
+        });
+    })();
 </script>
 </body>
 </html>
