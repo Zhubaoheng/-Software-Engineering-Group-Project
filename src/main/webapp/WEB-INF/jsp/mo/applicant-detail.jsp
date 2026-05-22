@@ -1,9 +1,23 @@
 <%@ page import="cn.bupt.tarecruitment.model.ApplicationReviewView" %>
+<%@ page import="cn.bupt.tarecruitment.model.SkillMatch" %>
 <%@ page import="cn.bupt.tarecruitment.util.WebUtils" %>
+<%!
+    String matchBadgeClass(SkillMatch match) {
+        if (match == null) {
+            return "match-weak";
+        }
+        switch (match.getLevel()) {
+            case "STRONG": return "match-strong";
+            case "MODERATE": return "match-moderate";
+            default: return "match-weak";
+        }
+    }
+%>
 <%
     request.setAttribute("pageTitle", "Applicant Detail");
     request.setAttribute("pageMeta", "Review profile information, CV metadata, and current status before making a decision.");
     ApplicationReviewView review = (ApplicationReviewView) request.getAttribute("review");
+    SkillMatch match = (SkillMatch) request.getAttribute("match");
     String educationSummary = "-";
     if (review != null && review.getProfile() != null) {
         String grade = review.getProfile().getGrade() == null ? "" : review.getProfile().getGrade();
@@ -69,6 +83,27 @@
         <p class="muted-block"><strong>Self Introduction:</strong> <%= review.getProfile() == null || review.getProfile().getSelfIntroduction() == null || review.getProfile().getSelfIntroduction().isBlank() ? "-" : WebUtils.escapeHtml(review.getProfile().getSelfIntroduction()) %></p>
         <p class="muted-block"><strong>Project Highlights:</strong> <%= review.getProfile() == null || review.getProfile().getProjectExperience() == null || review.getProfile().getProjectExperience().isBlank() ? "-" : WebUtils.escapeHtml(review.getProfile().getProjectExperience()) %></p>
         <p><span class="status"><%= WebUtils.escapeHtml(review.getApplication().getStatus()) %></span></p>
+        <% if (match != null) { %>
+        <div class="match-panel">
+            <h3>Skill Match <span class="match-badge <%= matchBadgeClass(match) %>"><%= match.getScorePercent() %>%</span></h3>
+            <p class="match-explanation"><%= WebUtils.escapeHtml(match.getExplanation()) %></p>
+            <% if (match.hasMatchedSkills()) { %>
+            <div class="skill-list">
+                <% for (String matched : match.getMatchedSkills()) { %>
+                <span class="skill-chip skill-matched"><%= WebUtils.escapeHtml(matched) %></span>
+                <% } %>
+            </div>
+            <% } %>
+            <% if (match.hasMissingSkills()) { %>
+            <div class="skill-list">
+                <% for (String missing : match.getMissingSkills()) { %>
+                <span class="skill-chip skill-missing"><%= WebUtils.escapeHtml(missing) %></span>
+                <% } %>
+            </div>
+            <% } %>
+            <p class="ai-note">This is an automated suggestion based on the applicant's profile skills. The final hiring decision is made by the Module Organiser.</p>
+        </div>
+        <% } %>
         <form method="post" action="<%= request.getContextPath() %>/mo/applicants/review" class="stack">
             <input type="hidden" name="applicationId" value="<%= review.getApplication().getApplicationId() %>">
             <div class="toolbar">

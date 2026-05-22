@@ -1,7 +1,10 @@
 package cn.bupt.tarecruitment.servlet;
 
 import cn.bupt.tarecruitment.context.AppContext;
+import cn.bupt.tarecruitment.model.ApplicantProfile;
 import cn.bupt.tarecruitment.model.AuthUser;
+import cn.bupt.tarecruitment.model.JobPost;
+import cn.bupt.tarecruitment.model.SkillMatch;
 import cn.bupt.tarecruitment.util.WebUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,9 +13,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * Servlet that lists all open jobs for a teaching assistant, together with an
+ * advisory skill-match result for each job against the TA's profile.
+ */
 @WebServlet("/ta/jobs")
 public class TAJobsServlet extends HttpServlet {
+    /**
+     * Renders the open jobs list with per-job skill matches for the signed-in TA.
+     *
+     * @param request  the HTTP request
+     * @param response the HTTP response
+     * @throws ServletException if forwarding to the JSP fails
+     * @throws IOException      if an I/O error occurs while handling the request
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -20,7 +37,11 @@ public class TAJobsServlet extends HttpServlet {
         if (user == null) {
             return;
         }
-        request.setAttribute("jobs", AppContext.JOBS_SERVICE.listOpenJobs());
+        List<JobPost> jobs = AppContext.JOBS_SERVICE.listOpenJobs();
+        ApplicantProfile profile = AppContext.PROFILES_SERVICE.getProfile(user.getId());
+        Map<String, SkillMatch> matches = AppContext.MATCH_SERVICE.matchJobsForApplicant(jobs, profile);
+        request.setAttribute("jobs", jobs);
+        request.setAttribute("matches", matches);
         request.setAttribute("flashMessage", WebUtils.consumeFlash(request));
         WebUtils.forward(request, response, "/WEB-INF/jsp/ta/jobs.jsp");
     }

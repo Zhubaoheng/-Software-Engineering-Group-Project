@@ -3,10 +3,10 @@ package cn.bupt.tarecruitment.servlet;
 import cn.bupt.tarecruitment.context.AppContext;
 import cn.bupt.tarecruitment.model.ApplicationRecord;
 import cn.bupt.tarecruitment.model.ApplicationReviewView;
-import cn.bupt.tarecruitment.model.ApplicationStatus;
 import cn.bupt.tarecruitment.model.AssignmentRecord;
 import cn.bupt.tarecruitment.model.AuthUser;
 import cn.bupt.tarecruitment.model.JobPost;
+import cn.bupt.tarecruitment.model.SkillMatch;
 import cn.bupt.tarecruitment.util.WebUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,8 +18,23 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Servlet for a Module Organiser to review a single application and record a
+ * hiring decision (shortlist, select or reject). Selecting an applicant also
+ * creates the corresponding assignment record.
+ */
 @WebServlet("/mo/applicants/review")
 public class MOApplicantReviewServlet extends HttpServlet {
+    /**
+     * Renders the application detail page with its skill match for the
+     * signed-in organiser. Redirects to the jobs page if the application is
+     * not found or not owned by the organiser.
+     *
+     * @param request  the HTTP request, expecting an {@code applicationId} parameter
+     * @param response the HTTP response
+     * @throws ServletException if forwarding to the JSP fails
+     * @throws IOException      if an I/O error occurs while handling the request
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -33,9 +48,22 @@ public class MOApplicantReviewServlet extends HttpServlet {
             return;
         }
         request.setAttribute("review", review);
+        request.setAttribute("match", matchFor(review));
         WebUtils.forward(request, response, "/WEB-INF/jsp/mo/applicant-detail.jsp");
     }
 
+    /**
+     * Applies a hiring decision to an application. A {@code decision} of
+     * Selected, Shortlisted or Rejected updates the application status;
+     * selecting also enforces the job's position limit and creates an
+     * assignment. Re-renders the detail page with an error on failure.
+     *
+     * @param request  the HTTP request, expecting {@code applicationId} and
+     *                 {@code decision} parameters
+     * @param response the HTTP response
+     * @throws ServletException if forwarding to the JSP fails
+     * @throws IOException      if an I/O error occurs while handling the request
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -70,8 +98,16 @@ public class MOApplicantReviewServlet extends HttpServlet {
                 return;
             }
             request.setAttribute("review", review);
+            request.setAttribute("match", matchFor(review));
             WebUtils.forward(request, response, "/WEB-INF/jsp/mo/applicant-detail.jsp");
         }
+    }
+
+    private SkillMatch matchFor(ApplicationReviewView review) {
+        if (review == null) {
+            return null;
+        }
+        return AppContext.MATCH_SERVICE.match(review.getJob(), review.getProfile());
     }
 
     private ApplicationReviewView loadReview(HttpServletRequest request, HttpServletResponse response, AuthUser user)
