@@ -1,6 +1,7 @@
 <%@ page import="cn.bupt.tarecruitment.util.WebUtils" %>
 <%
     String error = (String) request.getAttribute("error");
+    String enteredUsername = (String) request.getAttribute("username");
     String contextPath = request.getContextPath();
 %>
 <!DOCTYPE html>
@@ -42,7 +43,8 @@
         <form method="post" action="<%= contextPath %>/register" class="form">
             <label>Username
                 <input type="text" name="username" required minlength="3" maxlength="30"
-                       placeholder="Choose a username">
+                       placeholder="Choose a username"
+                       value="<%= enteredUsername == null ? "" : WebUtils.escapeHtml(enteredUsername) %>">
             </label>
             <label>Password
                 <input type="password" name="password" required minlength="4"
