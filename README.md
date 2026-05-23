@@ -19,11 +19,12 @@ The project follows the coursework constraints:
 - No database
 - No Spring Boot
 
-## Implemented MVP
+## Implemented Features
 
 - Login by role
+- New user self-registration at `/register` (creates a TA Applicant account)
 - TA profile create and edit
-- CV file upload and metadata save
+- CV file upload, metadata save, and in-browser CV preview
 - Browse open TA jobs
 - View job details
 - Apply for a job
@@ -31,6 +32,8 @@ The project follows the coursework constraints:
 - MO create, edit, and close job posts
 - MO review applicants and update decisions
 - Admin workload dashboard
+- AI-assisted explainable skill matching on TA job pages and MO applicant pages: each job/applicant shows a match score, matched skills and missing skills, and MO applicant lists are ranked by match
+- AI-assisted workload-balancing recommendations on the Admin dashboard: overload detection plus suggested reassignments with a human-readable reason
 
 ## Environment Requirements
 
@@ -51,6 +54,20 @@ Generated artifact:
 ```text
 target/ta-recruitment-system-1.0.0-SNAPSHOT.war
 ```
+
+## Tests
+
+The project includes a JUnit 5 test suite (53 tests) covering the pure business logic
+(skill matching, workload aggregation and rebalancing, validation rules) and read-only
+checks against the seeded JSON data.
+
+Run the tests from the project root:
+
+```bash
+mvn test
+```
+
+`mvn clean package` also runs the suite as part of the build.
 
 ## How To Start The Project
 
@@ -149,8 +166,10 @@ If the seeded accounts do not work after deployment, copy the project `data/` fo
 | --- | --- | --- |
 | `/` | GET | Redirects to `/login` |
 | `/login` | GET, POST | Login page and authentication |
+| `/register` | GET, POST | New user registration form and account creation |
 | `/logout` | GET | Clear session and return to login |
 | `/role-home` | GET | Generic landing page for logged-in users |
+| `/cv/preview` | GET | Stream an uploaded CV file for in-browser preview |
 
 ### TA Interfaces
 
@@ -236,6 +255,37 @@ Missing files and directories are created automatically when the application sta
 - MO decisions update application status.
 - Workload is calculated from assignment records.
 - Overload is highlighted on the admin dashboard.
+
+## AI-Assisted Features
+
+The system includes two "AI-assisted" features. Both are **rule-based, deterministic, and
+explainable** — they call no external model or API, and the same input always produces the
+same output. Crucially, both are **advisory only**: the coursework requires that AI output
+is never blindly accepted, so the system always leaves the final decision to a human.
+
+### Explainable Skill Matching
+
+Each open job lists a set of required skills, and each TA profile lists the skills the
+applicant has. The match service normalises both lists (trimmed, lower-cased), counts how
+many required skills are covered, and produces a score (percentage of required skills
+covered), a STRONG / MODERATE / WEAK level, and a plain-English explanation naming the
+matched and missing skills.
+
+- On TA job pages the score helps an applicant judge fit and see which skills to strengthen.
+- On MO applicant pages the applicants are ranked by match score, but the score is shown
+  alongside the full profile so the MO can override the ranking. The MO, not the algorithm,
+  decides who is shortlisted, selected, or rejected.
+
+### Workload-Balancing Recommendations
+
+The Admin dashboard aggregates assigned hours per TA from the assignment records and flags
+any TA above the overload threshold (12 hours). For each overloaded TA the workload service
+suggests moving a specific assignment to a specific underloaded TA, and prints a
+human-readable reason explaining the hours involved and why the move keeps both TAs within
+the limit.
+
+These recommendations are suggestions only. The Admin reviews them and decides whether to
+act; the system performs no automatic reassignment.
 
 ## Current Limitations
 
