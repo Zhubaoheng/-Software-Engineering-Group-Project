@@ -14,7 +14,12 @@
   --danger-soft: #fef3f2;
   --success: #027a48;
   --success-soft: #ecfdf3;
+  --warn: #8a4b08;
+  --warn-soft: #fff6e3;
+  --info: #1d4ed8;
+  --info-soft: #eef3ff;
   --shadow: 0 22px 70px rgba(30, 24, 18, 0.08);
+  --radius: 24px;
 }
 
 * {
@@ -130,12 +135,18 @@ a {
   color: var(--muted);
   text-decoration: none;
   font-weight: 600;
+  transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
 }
 
 .nav-item:hover,
 .logout-link:hover {
   background: rgba(255, 255, 255, 0.78);
   border-color: var(--line);
+  color: var(--ink);
+}
+
+.logout-link {
+  justify-content: center;
 }
 
 .nav-item.is-active {
@@ -214,6 +225,13 @@ a {
   gap: 18px;
 }
 
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
 .hero-grid,
 .stats-grid,
 .split-grid,
@@ -239,7 +257,7 @@ a {
 .stat-label {
   color: var(--muted);
   font-size: 0.92rem;
-}xx
+}
 
 .stat-value {
   margin-top: 8px;
@@ -502,34 +520,60 @@ select:focus {
 
 button,
 .link-button,
-.secondary-link {
+.secondary-link,
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 44px;
   border-radius: 16px;
-  padding: 0 16px;
+  padding: 0 18px;
   font-weight: 700;
   text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.16s ease, background 0.16s ease,
+    border-color 0.16s ease;
 }
 
 button,
-.link-button {
+.link-button,
+.btn {
   border: 0;
   background: linear-gradient(135deg, #c86c07, #a44907);
   color: #fff;
   cursor: pointer;
+  box-shadow: 0 8px 20px rgba(164, 73, 7, 0.18);
+}
+
+button:hover,
+.link-button:hover,
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(164, 73, 7, 0.26);
+}
+
+button:active,
+.link-button:active,
+.btn:active,
+.secondary-link:active {
+  transform: translateY(0);
 }
 
 button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .secondary-link {
   border: 1px solid var(--line);
   color: var(--ink);
   background: rgba(255, 255, 255, 0.72);
+}
+
+.secondary-link:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: var(--line-strong);
 }
 
 .auth-note {
@@ -905,4 +949,213 @@ code {
     display: grid;
     gap: 4px;
   }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   Dashboard feature cards (role-home)
+   ============================================================ */
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px;
+}
+
+.feature-card h3 {
+  margin: 0;
+  font-size: 1.12rem;
+}
+
+.feature-card p {
+  margin: 0;
+  flex: 1;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.feature-card .btn,
+.feature-card .link-button {
+  align-self: flex-start;
+  margin-top: 6px;
+}
+
+.feature-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+
+/* ============================================================
+   AI features — skill match, skill chips, recommendations
+   ============================================================ */
+
+/* Match badge — a compact pill showing a match percentage */
+.match-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  background: rgba(71, 85, 105, 0.1);
+  color: #334155;
+  white-space: nowrap;
+}
+
+.match-badge.match-strong {
+  background: var(--success-soft);
+  border-color: rgba(2, 122, 72, 0.2);
+  color: var(--success);
+}
+
+.match-badge.match-moderate {
+  background: var(--warn-soft);
+  border-color: rgba(217, 119, 6, 0.24);
+  color: var(--warn);
+}
+
+.match-badge.match-weak {
+  background: var(--danger-soft);
+  border-color: rgba(180, 35, 24, 0.18);
+  color: var(--danger);
+}
+
+/* Skill chips — flex-wrap list of small tags */
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 6px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--ink);
+}
+
+.skill-chip.skill-matched {
+  background: var(--success-soft);
+  border-color: rgba(2, 122, 72, 0.22);
+  color: var(--success);
+}
+
+.skill-chip.skill-matched::before {
+  content: "\2713";
+  font-weight: 800;
+}
+
+.skill-chip.skill-missing {
+  background: var(--danger-soft);
+  border-color: rgba(180, 35, 24, 0.2);
+  color: var(--danger);
+}
+
+.skill-chip.skill-missing::before {
+  content: "\2715";
+  font-weight: 800;
+}
+
+/* Match panel — elevated breakdown box for a skill match */
+.match-panel {
+  padding: 22px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at top right, rgba(255, 244, 229, 0.65), transparent 42%),
+    rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 38px rgba(27, 20, 13, 0.07);
+}
+
+.match-panel h3 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 12px;
+  font-size: 1.12rem;
+}
+
+.match-panel .match-explanation {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 0.96rem;
+}
+
+/* Recommendation card — one workload-rebalancing suggestion */
+.reco-card {
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 24px rgba(27, 20, 13, 0.05);
+}
+
+.reco-card + .reco-card {
+  margin-top: 14px;
+}
+
+.reco-card h4 {
+  margin: 0 0 8px;
+  font-size: 1.04rem;
+}
+
+.reco-card .reco-move {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.reco-card .reco-reason {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* AI advisory note — small, italic, muted helper text */
+.ai-note {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.ai-note::before {
+  content: "AI \2728  ";
+  font-style: normal;
+  font-weight: 700;
+  color: var(--accent-ink);
 }

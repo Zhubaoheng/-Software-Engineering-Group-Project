@@ -15,6 +15,7 @@
     <maven.compiler.release>17</maven.compiler.release>
     <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
     <jackson.version>2.17.2</jackson.version>
+    <junit.version>5.10.2</junit.version>
   </properties>
 
   <dependencies>
@@ -28,6 +29,12 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -44,6 +51,19 @@
         <version>3.4.0</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.6.3</version>
+        <configuration>
+          <failOnError>false</failOnError>
         </configuration>
       </plugin>
     </plugins>

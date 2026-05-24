@@ -97,7 +97,11 @@ public class MOJobsServlet extends HttpServlet {
 
     private JobPost loadOwnedJob(HttpServletRequest request, HttpServletResponse response, AuthUser user)
             throws IOException {
-        String jobId = request.getParameter("id");
+        // GET edit links pass the job id as "id"; POST forms submit it as "jobId" — accept either.
+        String jobId = request.getParameter("jobId");
+        if (jobId == null || jobId.isBlank()) {
+            jobId = request.getParameter("id");
+        }
         if (jobId == null || jobId.isBlank()) {
             WebUtils.setFlash(request, "Job not found.");
             response.sendRedirect(request.getContextPath() + "/mo/jobs");

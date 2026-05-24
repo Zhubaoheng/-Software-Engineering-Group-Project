@@ -8,14 +8,21 @@ import cn.bupt.tarecruitment.repository.UserRepository;
 import cn.bupt.tarecruitment.service.ApplicationService;
 import cn.bupt.tarecruitment.service.AuthService;
 import cn.bupt.tarecruitment.service.JobService;
+import cn.bupt.tarecruitment.service.MatchService;
 import cn.bupt.tarecruitment.service.ProfileService;
 import cn.bupt.tarecruitment.service.impl.DefaultApplicationService;
 import cn.bupt.tarecruitment.service.impl.DefaultAuthService;
 import cn.bupt.tarecruitment.service.impl.DefaultJobService;
+import cn.bupt.tarecruitment.service.impl.DefaultMatchService;
 import cn.bupt.tarecruitment.service.impl.DefaultProfileService;
 import cn.bupt.tarecruitment.util.AppPaths;
 import cn.bupt.tarecruitment.util.JsonUtils;
 
+/**
+ * Application-wide service locator. Holds the single shared instances of every
+ * repository and service, and ensures the backing JSON data files and upload
+ * directory exist before the application serves any request.
+ */
 public final class AppContext {
     public static final UserRepository USERS = new UserRepository();
     public static final ProfileRepository PROFILES = new ProfileRepository();
@@ -28,6 +35,7 @@ public final class AppContext {
     public static final JobService JOBS_SERVICE = new DefaultJobService(JOBS);
     public static final ApplicationService APPLICATIONS_SERVICE =
             new DefaultApplicationService(APPLICATIONS, JOBS_SERVICE);
+    public static final MatchService MATCH_SERVICE = new DefaultMatchService();
 
     static {
         JsonUtils.ensureFile(AppPaths.USERS_FILE);
@@ -38,6 +46,7 @@ public final class AppContext {
         JsonUtils.ensureDir(AppPaths.UPLOADS_DIR);
     }
 
+    /** Prevents instantiation; this class only exposes static members. */
     private AppContext() {
     }
 }
